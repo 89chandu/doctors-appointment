@@ -23,16 +23,16 @@ app.use("/api/v1/user", require("./routes/userRoutes"));
 app.use("/api/v1/admin", require("./routes/adminRoutes"));
 app.use("/api/v1/doctor", require("./routes/doctorRoutes"));
 
-// Deployment
-const __dirname1 = path.resolve();
-
+// Serve static assets in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "/client/build")));
+  // Set static folder
+  app.use(express.static(path.join(__dirname, "/client/build")));
 
   app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"))
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
   );
 } else {
+  // In development, serve a simple message and the API
   app.get("/", (req, res) => {
     res.send("API is running..");
   });
@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 6000;
 
 // Listen to the port
 app.listen(PORT, () => {
